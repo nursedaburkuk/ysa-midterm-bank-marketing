@@ -385,7 +385,7 @@ for _, r in outer.iterrows():
                  f"{r.TP}/{r.FP}/{r.TN}/{r.FN}"])
 story += [Paragraph("5. İç içe çapraz doğrulama bulguları", H1),
           tcap("Tablo 5. Dış CV kat bazlı sonuçlar (eşik 0.50). Her dış değerlendirme kümesinde 1.098 veya 1.099 gözlem ve 120 veya 121 pozitif örnek bulunmaktadır."),
-          table(rows, [0.85, 2.45, 1.15, 1.2, 1.5, 1.2, 1.2, 1.2, 1.4, 1.2, 2.3])]
+          table(rows, [0.85, 2.35, 1.15, 1.2, 1.7, 1.2, 1.2, 1.2, 1.4, 1.2, 2.25])]
 rows = [["Yöntem", "AP", "ROC-AUC", "F1", "Sens.", "Spec.", "Bal. Acc."]]
 for meth, lab in [("Manual search", "Manuel arama (MLP)"), ("Random search", "Otomatik arama (MLP)"), ("LogReg", "Logistic Regression"), ("Dummy", "Dummy")]:
     rows.append([lab] + [ms(*outer_ms(meth, m)) for m in ["AP", "ROC_AUC", "F1", "Sensitivity", "Specificity", "Balanced_Accuracy"]])

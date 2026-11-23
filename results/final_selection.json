@@ -1,0 +1,37 @@
+{
+  "final_candidate": "R1",
+  "final_method": "Random search",
+  "manual_winner": "M5",
+  "random_winner": "R1",
+  "dev_inner_cv_mean_AP": {
+    "M5": 0.43545370955861423,
+    "R1": 0.43804504419809026
+  },
+  "dev_inner_cv_sd_AP": {
+    "M5": 0.047830183676016956,
+    "R1": 0.05311910033519102
+  },
+  "config": {
+    "optimizer": "sgd",
+    "activation": "tanh",
+    "batch_size": 64,
+    "clipping": false,
+    "dropout": 0.2,
+    "hidden_layers": [
+      64,
+      32
+    ],
+    "lr": 0.07122726,
+    "scaler": "robust",
+    "weight_decay": 0.0001,
+    "scheduler": true,
+    "unknown": "category"
+  },
+  "threshold": 0.5,
+  "selection_rule": {
+    "within_search": "İç CV ortalama AP en yüksek aday seçilir. Eşitlikte sırasıyla daha düşük iç CV SD, daha az öğrenilebilir parametre ve daha küçük aday kodu (M1<M2..., R1<R2...) seçilir.",
+    "final_method": "Tüm development üzerinde tekrarlanan iç CV'de manuel kazanan ile otomatik kazanandan ortalama AP'si yüksek olan nihai konfigürasyondur. Eşitlikte aynı ikincil kurallar uygulanır.",
+    "primary_seed": "SEEDS['torch'] ile eğitilen model ana modeldir.",
+    "threshold": 0.5
+  }
+}

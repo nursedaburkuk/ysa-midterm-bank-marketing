@@ -1,0 +1,48 @@
+{
+  "note": "Ek analizler seçim bütçesine dahil değildir ve hiçbir seçimi etkilemez. Yalnızca tüm development üzerindeki iç CV katlarında, M1'den tek bir ön işleme faktörü değiştirilerek çalıştırılır.",
+  "S_robust": {
+    "batch_size": 64,
+    "dropout": 0.0,
+    "activation": "relu",
+    "weight_decay": 0.0001,
+    "clipping": false,
+    "unknown": "category",
+    "optimizer": "adamw",
+    "hidden_layers": [
+      32
+    ],
+    "scaler": "robust",
+    "lr": 0.001,
+    "scheduler": true
+  },
+  "S_clip": {
+    "batch_size": 64,
+    "dropout": 0.0,
+    "activation": "relu",
+    "weight_decay": 0.0001,
+    "clipping": true,
+    "unknown": "category",
+    "optimizer": "adamw",
+    "hidden_layers": [
+      32
+    ],
+    "scaler": "standard",
+    "lr": 0.001,
+    "scheduler": true
+  },
+  "S_unknown_mf": {
+    "batch_size": 64,
+    "dropout": 0.0,
+    "activation": "relu",
+    "weight_decay": 0.0001,
+    "clipping": false,
+    "unknown": "most_frequent",
+    "optimizer": "adamw",
+    "hidden_layers": [
+      32
+    ],
+    "scaler": "standard",
+    "lr": 0.001,
+    "scheduler": true
+  }
+}

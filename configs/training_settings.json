@@ -1,0 +1,46 @@
+{
+  "max_epochs": 150,
+  "early_stopping_patience": 15,
+  "restore_best_weights": true,
+  "monitor_fraction": 0.15,
+  "scheduler": {
+    "name": "ReduceLROnPlateau",
+    "mode": "min",
+    "factor": 0.5,
+    "patience": 5,
+    "min_lr": 1e-05
+  },
+  "monitor_metric": "monitor BCE loss (mode=min)",
+  "selection_metric": "inner CV average_precision_score (AP)",
+  "threshold": 0.5,
+  "sgd_momentum": 0.9,
+  "selection_rule": {
+    "within_search": "İç CV ortalama AP en yüksek aday seçilir. Eşitlikte sırasıyla daha düşük iç CV SD, daha az öğrenilebilir parametre ve daha küçük aday kodu (M1<M2..., R1<R2...) seçilir.",
+    "final_method": "Tüm development üzerinde tekrarlanan iç CV'de manuel kazanan ile otomatik kazanandan ortalama AP'si yüksek olan nihai konfigürasyondur. Eşitlikte aynı ikincil kurallar uygulanır.",
+    "primary_seed": "SEEDS['torch'] ile eğitilen model ana modeldir.",
+    "threshold": 0.5
+  },
+  "reference_models": {
+    "Dummy": {
+      "class": "DummyClassifier",
+      "strategy": "most_frequent"
+    },
+    "LogReg": {
+      "class": "LogisticRegression",
+      "C": 1.0,
+      "solver": "lbfgs",
+      "max_iter": 5000,
+      "preprocessing": "M1 ile aynı sabit kural: median imputation, StandardScaler, clipping yok, 'unknown' ayrı kategori, OneHotEncoder(handle_unknown='ignore')"
+    }
+  },
+  "outer_cv": {
+    "n_splits": 3,
+    "shuffle": true,
+    "random_state": 31078
+  },
+  "inner_cv": {
+    "n_splits": 3,
+    "shuffle": true,
+    "random_state": 31079
+  }
+}

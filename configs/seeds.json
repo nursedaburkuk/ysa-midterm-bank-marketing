@@ -1,0 +1,30 @@
+{
+  "student_number_last5": 29048,
+  "base_seed": 31074,
+  "offsets": {
+    "python": 0,
+    "numpy": 1,
+    "torch": 2,
+    "train_test_split": 3,
+    "outer_cv": 4,
+    "inner_cv": 5,
+    "early_stop_split": 6,
+    "random_search": 7,
+    "bootstrap": 8,
+    "torch_stability_2": 102,
+    "torch_stability_3": 202
+  },
+  "seeds": {
+    "python": 31074,
+    "numpy": 31075,
+    "torch": 31076,
+    "train_test_split": 31077,
+    "outer_cv": 31078,
+    "inner_cv": 31079,
+    "early_stop_split": 31080,
+    "random_search": 31081,
+    "bootstrap": 31082,
+    "torch_stability_2": 31176,
+    "torch_stability_3": 31276
+  }
+}

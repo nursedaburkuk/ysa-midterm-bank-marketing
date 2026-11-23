@@ -1,0 +1,99 @@
+{
+  "M1": {
+    "batch_size": 64,
+    "dropout": 0.0,
+    "activation": "relu",
+    "weight_decay": 0.0001,
+    "clipping": false,
+    "unknown": "category",
+    "optimizer": "adamw",
+    "hidden_layers": [
+      32
+    ],
+    "scaler": "standard",
+    "lr": 0.001,
+    "scheduler": true,
+    "purpose": "Temel konfigürasyon"
+  },
+  "M2": {
+    "batch_size": 64,
+    "dropout": 0.0,
+    "activation": "relu",
+    "weight_decay": 0.0001,
+    "clipping": false,
+    "unknown": "category",
+    "optimizer": "adam",
+    "hidden_layers": [
+      32
+    ],
+    "scaler": "standard",
+    "lr": 0.001,
+    "scheduler": true,
+    "purpose": "Optimizer etkisi (AdamW -> Adam)"
+  },
+  "M3": {
+    "batch_size": 64,
+    "dropout": 0.0,
+    "activation": "relu",
+    "weight_decay": 0.0001,
+    "clipping": false,
+    "unknown": "category",
+    "optimizer": "sgd",
+    "hidden_layers": [
+      32
+    ],
+    "scaler": "standard",
+    "lr": 0.001,
+    "scheduler": true,
+    "purpose": "Optimizer etkisi (AdamW -> SGD+Momentum 0.9)"
+  },
+  "M4": {
+    "batch_size": 64,
+    "dropout": 0.0,
+    "activation": "relu",
+    "weight_decay": 0.0001,
+    "clipping": false,
+    "unknown": "category",
+    "optimizer": "adamw",
+    "hidden_layers": [
+      32
+    ],
+    "scaler": "minmax",
+    "lr": 0.001,
+    "scheduler": true,
+    "purpose": "Ölçekleme etkisi (Standard -> MinMax)"
+  },
+  "M5": {
+    "batch_size": 64,
+    "dropout": 0.0,
+    "activation": "relu",
+    "weight_decay": 0.0001,
+    "clipping": false,
+    "unknown": "category",
+    "optimizer": "adamw",
+    "hidden_layers": [
+      64,
+      32
+    ],
+    "scaler": "standard",
+    "lr": 0.001,
+    "scheduler": true,
+    "purpose": "Mimari etkisi ((32,) -> (64,32))"
+  },
+  "M6": {
+    "batch_size": 64,
+    "dropout": 0.0,
+    "activation": "relu",
+    "weight_decay": 0.0001,
+    "clipping": false,
+    "unknown": "category",
+    "optimizer": "adamw",
+    "hidden_layers": [
+      32
+    ],
+    "scaler": "standard",
+    "lr": 0.001,
+    "scheduler": false,
+    "purpose": "Learning-rate-drop etkisi (scheduler kapalı)"
+  }
+}

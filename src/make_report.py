@@ -557,8 +557,10 @@ def on_page(canvas, doc):
         canvas.drawCentredString(A4[0] / 2, 1.2 * cm, str(doc.page - 1))
 
 
-doc = SimpleDocTemplate(str(P.ROOT / "report.pdf"), pagesize=A4, leftMargin=2.2 * cm, rightMargin=2.2 * cm,
-                        topMargin=2.0 * cm, bottomMargin=2.0 * cm, title="MLP ile Sınıflandırma — Bank Marketing",
-                        author="Nurseda Akgül")
-doc.build(story, onFirstPage=on_page, onLaterPages=on_page)
-print("report.pdf yazıldı")
+
+if __name__ == "__main__":
+    doc = SimpleDocTemplate(str(P.ROOT / "report.pdf"), pagesize=A4, leftMargin=2.2 * cm, rightMargin=2.2 * cm,
+                            topMargin=2.0 * cm, bottomMargin=2.0 * cm, title="MLP ile Sınıflandırma — Bank Marketing",
+                            author="Nurseda Akgül")
+    doc.build(story, onFirstPage=on_page, onLaterPages=on_page)
+    print("report.pdf yazıldı")

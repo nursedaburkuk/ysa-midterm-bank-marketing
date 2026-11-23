@@ -1,0 +1,80 @@
+{
+  "final_candidate": "R1",
+  "final_method": "Random search",
+  "architecture": {
+    "input_dim": 62,
+    "hidden_layers": [
+      64,
+      32
+    ],
+    "activation": "tanh",
+    "dropout": 0.2,
+    "output": "1 logit",
+    "loss": "BCEWithLogitsLoss",
+    "probability": "sigmoid(logit)",
+    "n_trainable_parameters": 6145
+  },
+  "optimizer": {
+    "name": "sgd",
+    "initial_lr": 0.07122726,
+    "weight_decay": 0.0001,
+    "momentum": 0.9,
+    "batch_size": 64
+  },
+  "preprocessing": {
+    "numeric_imputer": "median",
+    "scaler": "robust",
+    "clipping_P1_P99": false,
+    "categorical": "'unknown' ayrı kategori; OneHotEncoder(handle_unknown='ignore')",
+    "pdays_rule": "999 -> NaN + pdays_no_prev_contact göstergesi",
+    "learned_stats_files": [
+      "results/final_models/learned_transform_stats_seed31076.json",
+      "results/final_models/learned_transform_stats_seed31176.json",
+      "results/final_models/learned_transform_stats_seed31276.json"
+    ]
+  },
+  "training": {
+    "max_epochs": 150,
+    "early_stopping_patience": 15,
+    "restore_best_weights": true,
+    "monitor_fraction": 0.15,
+    "scheduler": {
+      "name": "ReduceLROnPlateau",
+      "mode": "min",
+      "factor": 0.5,
+      "patience": 5,
+      "min_lr": 1e-05
+    },
+    "monitor_metric": "monitor BCE loss (mode=min)",
+    "selection_metric": "inner CV average_precision_score (AP)",
+    "threshold": 0.5,
+    "sgd_momentum": 0.9
+  },
+  "scheduler_on": true,
+  "monitor_split_seed": 31080,
+  "weight_seeds": [
+    31076,
+    31176,
+    31276
+  ],
+  "primary_seed": 31076,
+  "epochs": {
+    "31076": {
+      "best_epoch": 7,
+      "stopped_epoch": 22
+    },
+    "31176": {
+      "best_epoch": 2,
+      "stopped_epoch": 17
+    },
+    "31276": {
+      "best_epoch": 2,
+      "stopped_epoch": 17
+    }
+  },
+  "decision_threshold": 0.5,
+  "dev_inner_cv_mean_AP": {
+    "M5": 0.43545370955861423,
+    "R1": 0.43804504419809026
+  }
+}

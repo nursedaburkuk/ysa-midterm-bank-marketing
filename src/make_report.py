@@ -176,7 +176,7 @@ story += [Spacer(1, 4 * cm), Paragraph("YAPAY SİNİR AĞLARI DERSİ — YÜKSEK
 om_ap, os_ap = outer_ms("Manual search", "AP"); orr_ap, ors_ap = outer_ms("Random search", "AP")
 ol_ap, ols_ap = outer_ms("LogReg", "AP")
 lo_ap, hi_ap = ci_of(main_label, "AP")
-story += [Paragraph("Özet", H1), p(
+story += [Paragraph("Özet ve araştırma sorusu", H1), p(
     "Bu çalışmada, banka telefon pazarlaması kampanyasında vadeli mevduat aboneliğinin görüşme öncesinde bilinen değişkenlerle "
     "tahmini için Çok Katmanlı Algılayıcı (MLP) modelleri incelenmiştir. Araştırma sorusu, MLP başarısının ön işleme, mimari, "
     "optimizer ve eğitim ayarlarına duyarlılığının ve hiperparametre seçim prosedürünün genelleme başarısının veri sızıntısı "
@@ -214,7 +214,8 @@ story += [Paragraph("2. Veri seti ve keşifsel veri analizi", H1),
     "bulunmamıştır. Görüşme tamamlanmadan bilinmeyen duration değişkeni tüm modellerden çıkarılmış, 9 sayısal ve 10 kategorik "
     f"değişken kullanılmıştır. Veri, sınıf oranları korunarak {int(dev.n)} gözlemlik geliştirme (%{dev.positive_pct:.2f} pozitif) ve "
     f"{int(tst.n)} gözlemlik test (%{tst.positive_pct:.2f} pozitif) kümelerine ayrılmıştır (seed {seeds['seeds']['train_test_split']}). "
-    "Satır indeksleri results/dataset_split.csv dosyasında kayıtlıdır.")]
+    "Bölünme sonucu sınıf dağılımı ile eksik ve özel kodlu değerler Tablo 1a'da, sayısal değişkenlerin tanımlayıcı istatistikleri Tablo 1b'de "
+    "verilmiştir. Satır indeksleri results/dataset_split.csv dosyasında kayıtlıdır.")]
 story += [p(
     "Tüm sütunları özdeş kayıt bulunmamıştır. Ancak duration çıkarıldıktan sonra "
     f"{n_dup_groups} kayıt çiftinin özellik vektörleri özdeş hâle gelmekte, bu çiftlerden birinde etiketler farklılaşmaktadır. "
@@ -245,11 +246,12 @@ story += [Paragraph("2.2 EDA bulguları", H2), p(
     f"Geliştirme kümesi {int(dev.n_negative)} negatif ve {int(dev.n_positive)} pozitif gözlemden oluşmaktadır (Şekil 1a). Sayısal "
     "değişkenlerin ölçekleri belirgin biçimde farklıdır. nr.employed yaklaşık 5.000 düzeyinde değer alırken cons.conf.idx negatiftir; "
     f"campaign ise sağa çarpık bir dağılım göstermektedir (medyan {numsum.loc['campaign','median']:.0f}, en büyük değer "
-    f"{numsum.loc['campaign','max']:.0f}). Pozitif sınıfın düşük euribor3m, emp.var.rate ve nr.employed değerlerinde yoğunlaştığı "
+    f"{numsum.loc['campaign','max']:.0f}; Tablo 1b ve Ek'teki histogramlar, Şekil A3). Pozitif sınıfın düşük euribor3m, emp.var.rate ve nr.employed değerlerinde yoğunlaştığı "
     f"gözlenmiştir (Şekil 2). Makroekonomik değişkenler arasında çok yüksek korelasyon bulunmaktadır ({top_str}; Şekil 1b). Hedefe "
     "dayalı özellik seçimi model seçimi niteliği taşıdığından bu değişkenler veride tutulmuştur.")]
 story += [p(
-    f"Kategorik değişkenlerde en fazla unknown değeri default değişkeninde görülmektedir (%{feat.loc['default','pct_unknown']:.2f}). "
+    f"Kategorik değişkenlerde en fazla unknown değeri default değişkeninde görülmektedir (%{feat.loc['default','pct_unknown']:.2f}; "
+    "Tablo 1a ve Ek'teki çubuk grafikler, Şekil A4). "
     f"pdays değişkenindeki 999 kodu daha önce temas kurulmadığını belirtmekte olup geliştirme kümesindeki oranı "
     f"%{100*(1-numsum.loc['pdays (999 hariç)','n']/dev.n):.2f}'dir. Betimsel olarak pozitif sınıf oranı, önceki kampanyası başarılı "
     f"müşterilerde %{pr['poutcome','success']:.1f}, önceki teması olmayanlarda %{pr['poutcome','nonexistent']:.1f} olarak "
@@ -309,7 +311,7 @@ story += [Paragraph("3.3 MLP yapısı ve eğitim kontrolü", H2), p(
     "katmanı tek logit üretmektedir. Tam bağlantılı bir katmandaki öğrenilebilir parametre sayısı girdi × çıktı + çıktı ile "
     "hesaplanmıştır. 61 girdili (32,) mimarisi için bu değer 61×32+32 = 1.984 ve 32×1+1 = 33 olmak üzere 2.017'dir. Girdi boyutu, fit "
     "alt kümesindeki kategori sayısına bağlı olarak 61 veya 62 olabildiğinden her eğitimin parametre sayısı ayrıca kaydedilmiştir. "
-    "Eğitim ayarları Tablo 2'de verilmiştir.")]
+    "Nihai modelin mimarisi ve katman bazında parametre hesabı Şekil 4'te, eğitim ayarları Tablo 2'de verilmiştir.")]
 t2 = [["Bileşen", "Ayar"], ["Kayıp ve çıkış", "Tek logit, BCEWithLogitsLoss; olasılık = sigmoid(logit); eşik 0.50"],
       ["En fazla epoch", "150 (en iyi ve durulan epoch kaydedilir)"],
       ["Optimizer", "SGD + Momentum (0.9), Adam, AdamW; weight decay optimizer parametresi olarak"],
@@ -386,14 +388,15 @@ for _, r in outer.iterrows():
 story += [Paragraph("5. İç içe çapraz doğrulama bulguları", H1),
           tcap("Tablo 5. Dış CV kat bazlı sonuçlar (eşik 0.50). Her dış değerlendirme kümesinde 1.098 veya 1.099 gözlem ve 120 veya 121 pozitif örnek bulunmaktadır."),
           table(rows, [0.85, 2.35, 1.15, 1.2, 1.7, 1.2, 1.2, 1.2, 1.4, 1.2, 2.25])]
-rows = [["Yöntem", "AP", "ROC-AUC", "F1", "Sens.", "Spec.", "Bal. Acc."]]
+rows = [["Yöntem", "AP", "ROC-AUC", "F1", "Sens.", "Spec.", "Bal. Acc.", "Eğitim süresi (s)"]]
 for meth, lab in [("Manual search", "Manuel arama (MLP)"), ("Random search", "Otomatik arama (MLP)"), ("LogReg", "Logistic Regression"), ("Dummy", "Dummy")]:
-    rows.append([lab] + [ms(*outer_ms(meth, m)) for m in ["AP", "ROC_AUC", "F1", "Sensitivity", "Specificity", "Balanced_Accuracy"]])
-story += [Spacer(1, 6), tcap("Tablo 6. Dış CV özeti: ortalama ± örnek standart sapma (n = 3). Katlar bağımsız tekrarlar olmadığından SD güven aralığı olarak yorumlanmamalıdır."),
-          table(rows, [3.6, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15])]
+    rows.append([lab] + [ms(*outer_ms(meth, m)) for m in ["AP", "ROC_AUC", "F1", "Sensitivity", "Specificity", "Balanced_Accuracy"]]
+                + ["{:.3f} ± {:.3f}".format(*outer_ms(meth, "fit_time_s"))])
+story += [Spacer(1, 6), tcap("Tablo 6. Dış CV özeti: ortalama ± örnek standart sapma (n = 3). Katlar bağımsız tekrarlar olmadığından SD güven aralığı olarak yorumlanmamalıdır. Eğitim süresi, dış eğitim kümesindeki yeniden eğitimin süresidir."),
+          table(rows, [2.9, 1.95, 1.95, 1.95, 1.95, 1.95, 1.95, 1.95])]
 lm, lsd = outer_ms("LogReg", "F1"); rm_, rsd = outer_ms("Random search", "F1"); mm_, msd = outer_ms("Manual search", "F1")
 story += [p(
-    f"İki arama prosedürü dış CV'de birbirine yakın AP değerleri vermiştir (manuel {ms(om_ap, os_ap)}, otomatik {ms(orr_ap, ors_ap)}). "
+    f"Kat bazlı sonuçlar Tablo 5'te, ortalama ± SD özeti Tablo 6'da verilmiştir. İki arama prosedürü dış CV'de birbirine yakın AP değerleri vermiştir (manuel {ms(om_ap, os_ap)}, otomatik {ms(orr_ap, ors_ap)}). "
     f"Logistic Regression ortalaması ({ms(ol_ap, ols_ap)}) daha yüksek olmakla birlikte katlar arası SD 0.06–0.07 düzeyinde olduğundan "
     "bu fark anlamlı kabul edilmemiştir. Kat sıralaması da tutarlı değildir; 1. ve 3. katta Logistic Regression, 2. katta otomatik arama "
     f"en yüksek AP'yi vermiştir. Dummy modelin AP değeri ({f4(outer_ms('Dummy','AP')[0])}) pozitif sınıf oranına eşittir ve "
@@ -426,7 +429,7 @@ nb = int(ci.n_boot.iloc[0]); rej = int(ci.rejected_single_class.max())
 story += [Paragraph("6.2 Test metrikleri ve güven aralıkları", H2),
           tcap(f"Tablo 7. Bağımsız test metrikleri (n = {int(tst.n)}, {int(tst.n_positive)} pozitif; eşik 0.50) ve {nb} tekrarlı bootstrap ile %95 yüzdelik güven aralıkları "
                f"(seed {s['bootstrap']}). Her yeniden örneklemede iki sınıfın bulunduğu kontrol edilmiş, tek sınıflı örnekleme sayısı {rej} olmuştur."),
-          table(rows, [3.3, 1.25, 1.45, 1.25, 1.3, 1.3, 1.3, 1.3, 1.45, 2.3])]
+          table(rows, [3.1, 1.25, 1.7, 1.25, 1.3, 1.3, 1.3, 1.3, 1.45, 2.2])]
 ci_rows = [["Model", "AP [%95 GA]", "ROC-AUC [%95 GA]", "F1 [%95 GA]"]]
 for lab in [main_label, "Logistic Regression"]:
     r = test.loc[lab]
@@ -447,7 +450,8 @@ story += [p(
     f"Ana MLP modeli bağımsız testte AP = {f4(tm.AP)} (%95 GA {f4(lo_ap)}–{f4(hi_ap)}), ROC-AUC = {f4(tm.ROC_AUC)} ve F1 = {f4(tm.F1)} "
     f"vermiştir. Logistic Regression için karşılık gelen değerler AP = {f4(tl.AP)}, ROC-AUC = {f4(tl.ROC_AUC)} ve F1 = {f4(tl.F1)} "
     "olarak hesaplanmıştır (Tablo 7). MLP'nin AP ve ROC-AUC değerleri daha yüksek, F1 değeri daha düşüktür; ancak güven aralıklarının büyük ölçüde örtüşmesi "
-    f"iki model arasında anlamlı bir fark bulunmadığını göstermektedir. Üç seed'in AP değerleri ({ms(mrow.AP, srow.AP)}) kararlıdır; F1 "
+    f"iki model arasında anlamlı bir fark bulunmadığını göstermektedir. ROC ve Precision–Recall eğrileri (Şekil 8) de iki modelin "
+    "eşikler boyunca birbirine yakın seyrettiğini, her ikisinin de Dummy modelin belirgin biçimde üzerinde kaldığını göstermektedir. Üç seed'in AP değerleri ({ms(mrow.AP, srow.AP)}) kararlıdır; F1 "
     f"değerindeki daha yüksek değişkenlik ({ms(mrow.F1, srow.F1)}) eşik yakınındaki az sayıda örneğin sınıf değiştirmesinden kaynaklanmaktadır (Tablo 8).")]
 story += [fig(F / "fig_test_confusion_matrices.png", 8.5, "Şekil 7. Bağımsız test karışıklık matrisleri: ana MLP (solda) ve Logistic Regression (sağda), eşik 0.50."),
           fig(F / "fig_test_roc_pr.png", 12.5, "Şekil 8. Bağımsız testte ROC (solda) ve Precision–Recall (sağda) eğrileri. PR panelindeki yatay çizgi pozitif sınıf oranıdır.")]
@@ -547,6 +551,8 @@ for code, r in supp.iterrows():
 story += [Spacer(1, 6), tcap("Tablo A2. Ek analiz: ön işleme alternatifleri (tüm development, aynı iç katlar). Bu analiz seçim bütçesine dahil değildir ve hiçbir seçimi etkilememiştir."),
           table(t6, [7.0, 4.0, 5.0])]
 story += [fig(F / "fig_outer_cv_ap.png", 9.0, "Şekil A2. Dış kat AP değerleri: manuel arama, otomatik arama, Logistic Regression ve Dummy (Tablo 5 ile aynı değerler).")]
+story += [fig(F / "fig_eda_histograms.png", 13.0, "Şekil A3. Sayısal değişkenlerin histogramları (geliştirme kümesi; pdays için 999 kodu hariç)."),
+          fig(F / "fig_eda_categorical_bars.png", 12.0, "Şekil A4. Kategorik değişkenlerin frekansları (geliştirme kümesi; turuncu çubuklar unknown kodunu göstermektedir).")]
 rows = [["Commit", "Zaman", "Açıklama"]] + [l.split("|", 2) for l in git_log]
 story += [tcap("Tablo A3. Zaman sıralı git kaydı (rapor üretildiği andaki geçmiş)."), table(rows, [1.7, 4.3, 10.0])]
 

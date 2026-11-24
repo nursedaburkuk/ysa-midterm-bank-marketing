@@ -34,6 +34,8 @@ Google Colab'da: depoyu klonlayın, `%cd ysa-midterm-bank-marketing` ile klasör
 | 4 | `03_final_test.ipynb` | Bölüm A: 3 seed ile nihai eğitim ve etiketsiz `test_predictions_locked.csv`. Bölüm B: yalnızca kilitli dosya commit edildikten sonra test metrikleri, bootstrap güven aralıkları, grafikler ve hata analizi |
 | 5 | `python -m src.make_report` | `report.pdf` raporunu sonuç dosyalarından üretir |
 
+**Farklı donanımda çalıştırma:** Sonuçlar deterministik seed'lerle üretilmiştir. Ancak Colab gibi farklı bir işlemci veya kütüphane sürümünde kayan nokta işlemleri çok küçük farklar üretebilir; bu durumda yeniden çalıştırılan 02 notebook'undaki değerler rapordakilerden son basamaklarda ayrılabilir. 03 notebook'u bu durumu bir uyarı olarak gösterir ve test metriklerini her zaman commit edilmiş `test_predictions_locked.csv` dosyasından hesaplar. Rapordaki bütün değerler depodaki `results/` dosyalarıyla birebir aynıdır.
+
 `03_final_test.ipynb`, kilitli tahmin dosyası git geçmişinde yoksa test etiketlerini okumadan durur. Dosya commit edildikten sonra yeniden çalıştırıldığında tahminleri yeniden üretir, kilitli dosyayla aynı olduklarını doğrular ve ancak ondan sonra etiketleri okur.
 
 ## 4. Seed politikası

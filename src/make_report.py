@@ -180,7 +180,7 @@ story += [Paragraph("Özet ve araştırma sorusu", H1), p(
     "Bu çalışmada, banka telefon pazarlaması kampanyasında vadeli mevduat aboneliğinin görüşme öncesinde bilinen değişkenlerle "
     "tahmini için Çok Katmanlı Algılayıcı (MLP) modelleri incelenmiştir. Araştırma sorusu, MLP başarısının ön işleme, mimari, "
     "optimizer ve eğitim ayarlarına duyarlılığının ve hiperparametre seçim prosedürünün genelleme başarısının veri sızıntısı "
-    "olmaksızın nasıl değerlendirilebileceğidir. UCI Bank Marketing veri setinin bank-additional.csv dosyası (4.119 gözlem) "
+    "olmaksızın nasıl değerlendirilebileceğidir. UCI Bank Marketing veri setinin bank-additional.csv dosyası (4119 gözlem) "
     "%80 geliştirme (development) ve %20 bağımsız test kümesine ayrılmıştır. Geliştirme kümesinde 3×3 iç içe çapraz doğrulama "
     "(nested cross-validation) ile altı manuel aday (M1–M6) ve altı rastgele arama adayı (R1–R6) iki ayrı arama olarak "
     "karşılaştırılmış, birincil metrik olarak Average Precision (AP) kullanılmıştır. Dış çapraz doğrulamada AP değeri manuel arama "
@@ -194,7 +194,7 @@ story += [Paragraph("Özet ve araştırma sorusu", H1), p(
 # ---------------------------------------------------------------------------
 story += [Paragraph("1. Giriş", H1), p(
     "MLP, doğrusal katmanlar ile doğrusal olmayan aktivasyon fonksiyonlarını art arda uygulayan ileri beslemeli bir sinir ağıdır. "
-    "Modelin başarısı mimari, optimizer, öğrenme oranı, düzenlileştirme ve ön işleme seçimlerine bağlıdır. Hiperparametrelerin "
+    "Modelin başarısı mimari, optimizasyon algoritması (optimizer), öğrenme oranı, düzenlileştirme ve ön işleme seçimlerine bağlıdır. Hiperparametrelerin "
     "seçildiği veri üzerinde performans raporlanması iyimser yanlı tahminlere yol açtığından (Cawley ve Talbot, 2010), bu çalışmada "
     "seçim iç döngüde, performans tahmini ise dış döngüde yapılmıştır. Veri setinde pozitif sınıf oranı yaklaşık %11'dir ve tüm "
     "gözlemleri negatif sınıfa atayan bir model yaklaşık %89 doğruluk elde eder. Bu nedenle birincil metrik olarak AP seçilmiştir. "
@@ -217,9 +217,9 @@ story += [Paragraph("2. Veri seti ve keşifsel veri analizi", H1),
     "Bölünme sonucu sınıf dağılımı ile eksik ve özel kodlu değerler Tablo 1a'da, sayısal değişkenlerin tanımlayıcı istatistikleri Tablo 1b'de "
     "verilmiştir. Satır indeksleri results/dataset_split.csv dosyasında kayıtlıdır.")]
 story += [p(
-    "Tüm sütunları özdeş kayıt bulunmamıştır. Ancak duration çıkarıldıktan sonra "
+    "Tüm sütunları özdeş olan kayıt bulunmamıştır. Ancak duration çıkarıldıktan sonra "
     f"{n_dup_groups} kayıt çiftinin özellik vektörleri özdeş hâle gelmekte, bu çiftlerden birinde etiketler farklılaşmaktadır. "
-    "Söz konusu kayıtlar özgün veride ayrı gözlemler olduğundan silinmemiş, bölünmelerde ödevde belirtilen StratifiedKFold korunmuştur. "
+    "Söz konusu kayıtlar özgün veride ayrı gözlemler olduğundan silinmemiş, bölünmelerde proje yönergesinde belirtilen StratifiedKFold yöntemi korunmuştur. "
     f"Bu çiftlerden {n_dup_cross} tanesinin geliştirme ve test kümelerine dağıldığı belirlenmiş ve küçük bir sızıntı kaynağı olarak "
     "kaydedilmiştir. Veri setinde müşteri kimliği bulunmadığından aynı müşteriye ait tekrarlar ayırt edilememektedir. Bu nedenle "
     "elde edilen sonuçlar, zamansal veya müşteri bağımsız genelleme olarak değil, aynı dağılımdan rastgele çekilmiş kayıtlara "
@@ -244,7 +244,7 @@ top_str = "; ".join(f"{a}–{b} r = {v:.2f}" for (a, b), v in top.items())
 pr = rates.set_index(["feature", "category"]).positive_rate_pct
 story += [Paragraph("2.2 EDA bulguları", H2), p(
     f"Geliştirme kümesi {int(dev.n_negative)} negatif ve {int(dev.n_positive)} pozitif gözlemden oluşmaktadır (Şekil 1a). Sayısal "
-    "değişkenlerin ölçekleri belirgin biçimde farklıdır. nr.employed yaklaşık 5.000 düzeyinde değer alırken cons.conf.idx negatiftir; "
+    "değişkenlerin ölçekleri birbirinden oldukça farklıdır. nr.employed yaklaşık 5000 düzeyinde değer alırken cons.conf.idx negatiftir; "
     f"campaign ise sağa çarpık bir dağılım göstermektedir (medyan {numsum.loc['campaign','median']:.0f}, en büyük değer "
     f"{numsum.loc['campaign','max']:.0f}; Tablo 1b ve Ek'teki histogramlar, Şekil A3). Pozitif sınıfın düşük euribor3m, emp.var.rate ve nr.employed değerlerinde yoğunlaştığı "
     f"gözlenmiştir (Şekil 2). Makroekonomik değişkenler arasında çok yüksek korelasyon bulunmaktadır ({top_str}; Şekil 1b). Hedefe "
@@ -281,7 +281,7 @@ story += [Paragraph("2.3 Deney hipotezleri", H2), p(
 # ---------------------------------------------------------------------------
 s = seeds["seeds"]
 story += [Paragraph("3. Yöntem", H1), Paragraph("3.1 Seed politikası ve iç içe çapraz doğrulama", H2), p(
-    f"Temel seed, öğrenci numarasının son beş hanesine (29048) 2026 eklenerek {seeds['base_seed']} olarak belirlenmiş, alt seed'ler "
+    f"Temel tohum değeri (seed), öğrenci numarasının son beş hanesine (29048) 2026 eklenerek {seeds['base_seed']} olarak belirlenmiş, alt seed'ler "
     f"sabit kaydırmalarla türetilmiştir: Python {s['python']}, NumPy {s['numpy']}, PyTorch {s['torch']}, test bölünmesi "
     f"{s['train_test_split']}, dış CV {s['outer_cv']}, iç CV {s['inner_cv']}, izleme bölünmesi {s['early_stop_split']}, rastgele arama "
     f"{s['random_search']}, bootstrap {s['bootstrap']}, ek ağırlık seed'leri {s['torch_stability_2']} ve {s['torch_stability_3']}. "
@@ -309,7 +309,7 @@ story += [p(
 story += [Paragraph("3.3 MLP yapısı ve eğitim kontrolü", H2), p(
     "Modeller PyTorch ile oluşturulmuştur. Gizli katmanlar Linear, aktivasyon ve isteğe bağlı Dropout katmanlarından oluşmakta, çıkış "
     "katmanı tek logit üretmektedir. Tam bağlantılı bir katmandaki öğrenilebilir parametre sayısı girdi × çıktı + çıktı ile "
-    "hesaplanmıştır. 61 girdili (32,) mimarisi için bu değer 61×32+32 = 1.984 ve 32×1+1 = 33 olmak üzere 2.017'dir. Girdi boyutu, fit "
+    "hesaplanmıştır. 61 girdili (32,) mimarisi için bu değer 61×32+32 = 1984 ve 32×1+1 = 33 olmak üzere toplam 2017'dir. Girdi boyutu, fit "
     "alt kümesindeki kategori sayısına bağlı olarak 61 veya 62 olabildiğinden her eğitimin parametre sayısı ayrıca kaydedilmiştir. "
     "Nihai modelin mimarisi ve katman bazında parametre hesabı Şekil 4'te, eğitim ayarları Tablo 2'de verilmiştir.")]
 t2 = [["Bileşen", "Ayar"], ["Kayıp ve çıkış", "Tek logit, BCEWithLogitsLoss; olasılık = sigmoid(logit); eşik 0.50"],
@@ -335,8 +335,8 @@ story += [Paragraph("3.4 Referans modeller", H2), p(
 # 4 Deneyler
 # ---------------------------------------------------------------------------
 story += [Paragraph("4. Manuel ve otomatik hiperparametre araması", H1), p(
-    "Manuel adaylar, M1 temel konfigürasyonundan tek bir faktör değiştirilerek tanımlanmıştır (batch size 64, dropout 0, ReLU, weight "
-    "decay 1e-4). Otomatik adaylar ParameterSampler ile her optimizer için iki aday olacak biçimde örneklenmiş, öğrenme oranı Adam ve "
+    "Manuel adaylar, M1 temel konfigürasyonundan tek bir faktör değiştirilerek tanımlanmıştır (yığın boyutu/batch size = 64, dropout = 0, ReLU, "
+    "ağırlık azaltma/weight decay = 1e-4). Otomatik adaylar ParameterSampler ile her optimizer için iki aday olacak biçimde örneklenmiş, öğrenme oranı Adam ve "
     "AdamW için 1e-4–1e-2, SGD için 1e-3–1e-1 aralığında log-uniform dağılımdan çekilmiştir. Tüm adaylar iç içe çapraz doğrulama "
     "başlamadan önce ayrı bir commit ile kaydedilmiştir. Sonuçlar Tablo 3 ve Tablo 4'te verilmiştir.")]
 
@@ -386,7 +386,7 @@ for _, r in outer.iterrows():
                  r.selected_candidate, f4(r.AP), f4(r.ROC_AUC), f4(r.F1), f4(r.Sensitivity), f4(r.Specificity), f4(r.Balanced_Accuracy), f4(r.Accuracy),
                  f"{r.TP}/{r.FP}/{r.TN}/{r.FN}"])
 story += [Paragraph("5. İç içe çapraz doğrulama bulguları", H1),
-          tcap("Tablo 5. Dış CV kat bazlı sonuçlar (eşik 0.50). Her dış değerlendirme kümesinde 1.098 veya 1.099 gözlem ve 120 veya 121 pozitif örnek bulunmaktadır."),
+          tcap("Tablo 5. Dış CV kat bazlı sonuçlar (eşik 0.50). Her dış değerlendirme kümesinde 1098 veya 1099 gözlem ve 120 veya 121 pozitif örnek bulunmaktadır."),
           table(rows, [0.85, 2.35, 1.15, 1.2, 1.7, 1.2, 1.2, 1.2, 1.4, 1.2, 2.25])]
 rows = [["Yöntem", "AP", "ROC-AUC", "F1", "Sens.", "Spec.", "Bal. Acc.", "Eğitim süresi (s)"]]
 for meth, lab in [("Manual search", "Manuel arama (MLP)"), ("Random search", "Otomatik arama (MLP)"), ("LogReg", "Logistic Regression"), ("Dummy", "Dummy")]:
@@ -450,8 +450,9 @@ story += [p(
     f"Ana MLP modeli bağımsız testte AP = {f4(tm.AP)} (%95 GA {f4(lo_ap)}–{f4(hi_ap)}), ROC-AUC = {f4(tm.ROC_AUC)} ve F1 = {f4(tm.F1)} "
     f"vermiştir. Logistic Regression için karşılık gelen değerler AP = {f4(tl.AP)}, ROC-AUC = {f4(tl.ROC_AUC)} ve F1 = {f4(tl.F1)} "
     "olarak hesaplanmıştır (Tablo 7). MLP'nin AP ve ROC-AUC değerleri daha yüksek, F1 değeri daha düşüktür; ancak güven aralıklarının büyük ölçüde örtüşmesi "
-    f"iki model arasında anlamlı bir fark bulunmadığını göstermektedir. ROC ve Precision–Recall eğrileri (Şekil 8) de iki modelin "
-    "eşikler boyunca birbirine yakın seyrettiğini, her ikisinin de Dummy modelin belirgin biçimde üzerinde kaldığını göstermektedir. Üç seed'in AP değerleri ({ms(mrow.AP, srow.AP)}) kararlıdır; F1 "
+    f"iki model arasında anlamlı bir fark bulunmadığına işaret etmektedir. ROC ve Precision–Recall eğrileri (Şekil 8) de iki modelin "
+    "eşikler boyunca birbirine yakın seyrettiğini ve her ikisinin de Dummy modelin üzerinde kaldığını ortaya koymaktadır. "
+    f"Üç başlangıç değerinin AP sonuçları ({ms(mrow.AP, srow.AP)}) kararlıdır. F1 "
     f"değerindeki daha yüksek değişkenlik ({ms(mrow.F1, srow.F1)}) eşik yakınındaki az sayıda örneğin sınıf değiştirmesinden kaynaklanmaktadır (Tablo 8).")]
 story += [fig(F / "fig_test_confusion_matrices.png", 8.5, "Şekil 7. Bağımsız test karışıklık matrisleri: ana MLP (solda) ve Logistic Regression (sağda), eşik 0.50."),
           fig(F / "fig_test_roc_pr.png", 12.5, "Şekil 8. Bağımsız testte ROC (solda) ve Precision–Recall (sağda) eğrileri. PR panelindeki yatay çizgi pozitif sınıf oranıdır.")]
@@ -461,8 +462,8 @@ story += [Paragraph("6.3 Hata analizi", H2), p(
     f"kampanyası başarılı müşterilerin oranı %{err.loc['TP','poutcome_success_pct']:.0f}, yanlış negatiflerde ise daha önce temas "
     f"kurulmamış müşterilerin oranı %{err.loc['FN','pdays_999_pct']:.0f} olarak bulunmuştur. Yanlış negatiflerin medyan tahmin olasılıkları "
     f"({err.loc['FN','prob']:.3f}) doğru negatiflerinkine ({err.loc['TN','prob']:.3f}) yakındır. Yanlış pozitiflerin tamamı önceki "
-    "kampanyası başarılı müşterilerdir. Bu örüntü, mevcut değişkenlerle ilk kez temas kurulan müşterilerde abonelik ayrımının "
-    "yapılamadığını ve modelin önceki kampanya başarısına güçlü biçimde dayandığını göstermektedir. Eşik test verisine göre "
+    "kampanyası başarılı müşterilerdir. Bu sonuçlara göre mevcut değişkenler, ilk kez temas kurulan müşterilerde abonelik ayrımı "
+    "için yetersiz kalmakta, model ise büyük ölçüde önceki kampanya başarısına dayanmaktadır. Eşik test verisine göre "
     "değiştirilmemiştir.")]
 
 # ---------------------------------------------------------------------------
@@ -476,25 +477,25 @@ story += [Paragraph("7. Tartışma", H1), Paragraph("7.1 Hipotezlerin değerlend
     f"ulaşmıştır. M3'ün AP değeri ({f4(d.loc['M3','mean_AP'])}) M1'in ({f4(d.loc['M1','mean_AP'])}) altında kalmış, Adam ile AdamW "
     f"arasındaki fark {abs(d.loc['M2','mean_AP']-d.loc['M1','mean_AP']):.4f} düzeyinde olmuştur. Otomatik aramada daha yüksek öğrenme "
     f"oranıyla ({fcfg['lr']:.3f}) örneklenen SGD adayı R1'in en iyi sonucu vermesi, M3'teki düşük başarının yöntemden değil, SGD için "
-    "küçük kalan öğrenme oranından kaynaklandığını düşündürmektedir.")]
+    "küçük kalan öğrenme oranından kaynaklandığı sonucuna varılmıştır.")]
 story += [p(
     f"<b>H3 kısmen desteklenmiştir.</b> Tüm geliştirme kümesinde StandardScaler (M1, {f4(d.loc['M1','mean_AP'])}) MinMaxScaler'dan "
     f"(M4, {f4(d.loc['M4','mean_AP'])}) yüksek AP vermiş, ancak 2. dış katta M4 seçilmiştir. <b>H4 kısmen reddedilmiştir.</b> M5 daha erken "
     f"durmuş (ortalama en iyi epoch {d.loc['M5','mean_best_epoch']:.1f}), ancak tüm geliştirme kümesinde M1'den yüksek AP "
     f"({f4(d.loc['M5','mean_AP'])}) vermiştir; bu fark 3. dış katta tersine dönmüştür. <b>H5 desteklenmiştir.</b> M1 ve M6, {n_tot} iç "
     f"CV eğitiminin {n_same} tanesinde özdeş AP üretmiştir. Epoch kayıtları, ReduceLROnPlateau'nun öğrenme oranını en iyi izleme "
-    "epoch'undan sonra düşürdüğünü göstermektedir (Şekil A1). En iyi ağırlıklar geri yüklendiğinden bu düşüş çoğu eğitimde nihai "
+    "epoch'undan sonra düşürdüğü görülmektedir (Şekil A1). En iyi ağırlıklar geri yüklendiğinden bu düşüş çoğu eğitimde nihai "
     "modeli etkilememiştir.")]
 story += [Paragraph("7.2 Genelleme ve model karmaşıklığı", H2), p(
     f"Dış CV, arama prosedürlerinin genelleme başarısını; tüm geliştirme kümesindeki iç CV ({FC} için "
     f"{ms(sel['dev_inner_cv_mean_AP'][FC], sel['dev_inner_cv_sd_AP'][FC])}) yalnızca seçimi; bağımsız test ise tek bir kilitli modelin "
     f"başarısını ölçmektedir. Test AP değeri ({f4(tm.AP)}) dış CV ortalamasının yaklaşık 0.04 altında, ancak dış kat aralığı (0.37–0.50) "
     f"içindedir. Benzer düşüşün Logistic Regression'da da görülmesi ({f4(ol_ap)} → {f4(tl.AP)}), farkın model seçimine özgü bir aşırı "
-    "öğrenmeden çok yalnızca 90 pozitif örnek içeren test kümesinin örnekleme değişkenliğinden kaynaklandığını düşündürmektedir. "
-    "Eğitim kaybı azalırken izleme kaybının artması aşırı öğrenmeye işaret etmekte, erken durdurma bu etkiyi sınırlamaktadır. 1.009 ile "
-    "16.257 arasında parametre içeren mimariler arasındaki AP farkları katlar arası değişkenliğin altında kalmış ve doğrusal Logistic "
-    "Regression da benzer başarı göstermiştir. Bu bulgular, veri setindeki öğrenilebilir sinyalin büyük ölçüde doğrusal olduğunu ve "
-    "daha karmaşık mimarilerin ek kazanç sağlamadığını göstermektedir.")]
+    "öğrenmeden çok yalnızca 90 pozitif örnek içeren test kümesinin örnekleme değişkenliğinden kaynaklandığını akla getirmektedir. "
+    "Eğitim kaybı azalırken izleme kaybının artması aşırı öğrenmeye işaret etmekte, erken durdurma bu etkiyi sınırlamaktadır. 1009 ile "
+    "16257 arasında parametre içeren mimariler arasındaki AP farkları katlar arası değişkenliğin altında kalmış ve doğrusal Logistic "
+    "Regression da benzer başarı göstermiştir. Bu sonuç, veri setindeki öğrenilebilir ilişkinin büyük ölçüde doğrusal olduğu ve "
+    "daha karmaşık mimarilerin ek kazanç sağlamadığı biçiminde yorumlanmıştır.")]
 story += [Paragraph("7.3 Sınırlamalar", H2), p(
     "Dış CV yalnızca üç kattan oluşmakta ve katlar aynı veriyi paylaştığından bağımsız tekrar niteliği taşımamaktadır. Test kümesinin "
     "küçük olması eşiğe bağlı metriklerde geniş güven aralıklarına yol açmıştır. Sınıf ağırlıklandırma veya eşik ayarlaması "
@@ -511,7 +512,7 @@ story += [Paragraph("7.3 Sınırlamalar", H2), p(
 story += [Paragraph("8. Sonuç", H1), p(
     "Bu çalışmada test verisini tüm kararlardan ayıran, ön işlemeyi her eğitimin fit alt kümesinde öğrenen ve manuel ile otomatik "
     "aramayı aynı iç katlarda karşılaştıran bir iç içe çapraz doğrulama protokolü uygulanmıştır. Hiperparametre seçiminin AP üzerindeki "
-    "etkisi katlar arası değişkenlikten küçük bulunmuştur. Aynı küçük öğrenme oranında SGD belirgin biçimde yavaş yakınsamış, uygun "
+    "etkisi katlar arası değişkenlikten küçük bulunmuştur. Aynı küçük öğrenme oranında SGD daha yavaş yakınsamış, uygun "
     "öğrenme oranıyla ise en iyi adaylar arasında yer almıştır. Öğrenme oranı zamanlayıcısı, erken durdurma ile birlikte kullanıldığında "
     "çoğu eğitimde nihai modeli değiştirmemiştir. MLP, dış CV'de ve bağımsız testte Logistic Regression'a göre ayırt edilebilir bir "
     f"üstünlük göstermemiştir (test AP {f4(tm.AP)} ve {f4(tl.AP)}). İleriki çalışmalarda eşik seçiminin geliştirme kümesi iç CV'si ile "

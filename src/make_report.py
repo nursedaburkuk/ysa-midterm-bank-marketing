@@ -535,27 +535,45 @@ for ref in [
 # ---------------------------------------------------------------------------
 # Ek
 # ---------------------------------------------------------------------------
-story += [PageBreak(), Paragraph("Ek A. Tekrarlanabilirlik bilgileri", H1), p(
-    "Kod: https://github.com/nursedaburkuk/ysa-midterm-bank-marketing. Çalıştırma sırası README.md dosyasındadır (01_eda.ipynb → src.make_configs → 02_nested_cv.ipynb "
-    "→ 03_final_test.ipynb → src.make_report). Ortam: Ubuntu 24.04.5 LTS, Intel Xeon 2.10 GHz (2 çekirdek), 7 GB RAM, GPU yok; Python 3.13.18, PyTorch 2.15.0, "
-    "scikit-learn 1.9.1, pandas 3.0.5, NumPy 2.5.3, SciPy 1.18.1, matplotlib 3.11.2. Ham veri SHA-256: 7e59cf65…df50. Ondalık ayırıcı olarak nokta kullanılmıştır. "
-    "Toplam eğitim sayısı: 108 dış-kat iç CV eğitimi, 6 dış-kat yeniden eğitimi, 36 tüm-development iç CV eğitimi, 9 ek analiz eğitimi ve 3 nihai eğitim.")]
-story += [fig(F / "fig_training_curves_manual_examples.png", 12.5, "Şekil A1. Tüm development iç CV'si, 1. iç kat: M1 (AdamW), M3 (SGD + Momentum) ve M6 (scheduler kapalı) için eğitim (fit) ve erken durdurma izleme BCE kaybı (üstte) ve epoch bazında öğrenme oranı (altta, log ölçek). Kesikli dikey çizgi en iyi epoch'tur.")]
-t5 = [["Optimizer", "Eğitim sayısı", "Ortalama süre (s)", "Toplam süre (s)", "Ortalama durma epoch'u", "150'ye ulaşan"]]
+story += [PageBreak(), Paragraph("Ek A. Tekrarlanabilirlik bilgileri ve ek bulgular", H1), p(
+    "Çalışmanın kodları, yapılandırma dosyaları ve sonuç dosyaları https://github.com/nursedaburkuk/ysa-midterm-bank-marketing "
+    "adresindeki depoda bulunmaktadır. Notebook'ların çalıştırılma sırası README.md dosyasında açıklanmıştır. Deneyler Ubuntu "
+    "24.04.5 LTS işletim sistemine sahip, iki çekirdekli Intel Xeon (2.10 GHz) işlemcili ve 7 GB belleğe sahip bir bilgisayarda, "
+    "grafik işlemci kullanılmadan yürütülmüştür. Yazılım ortamında Python 3.13.18, PyTorch 2.15.0, scikit-learn 1.9.1, pandas 3.0.5, "
+    "NumPy 2.5.3, SciPy 1.18.1 ve matplotlib 3.11.2 sürümleri kullanılmıştır. Raporda ondalık ayırıcı olarak nokta kullanılmıştır.")]
+story += [p(
+    "Çalışma kapsamında toplam 162 model eğitimi gerçekleştirilmiştir. Bu eğitimlerin 108'i dış katlar içindeki iç çapraz doğrulamaya, "
+    "6'sı seçilen adayların dış eğitim kümelerinde yeniden eğitilmesine, 36'sı tüm geliştirme kümesindeki nihai seçime, 9'u seçime dahil "
+    "edilmeyen ön işleme analizine ve 3'ü nihai modelin farklı başlangıç değerleriyle eğitilmesine aittir. Şekil A1'de manuel adaylardan "
+    "üçünün eğitim eğrileri, Tablo A1'de optimizer bazında eğitim süreleri, Tablo A2'de ön işleme alternatiflerinin karşılaştırması "
+    "verilmiştir. Şekil A2 dış kat AP değerlerini, Şekil A3 ve Şekil A4 ise geliştirme kümesinin sayısal ve kategorik değişken "
+    "dağılımlarını göstermektedir. Deneylerin zaman sırası Tablo A3'te özetlenmiştir.")]
+story += [fig(F / "fig_training_curves_manual_examples.png", 12.5, "Şekil A1. Tüm geliştirme kümesindeki iç çapraz doğrulamanın birinci katında M1 (AdamW), M3 (SGD + Momentum) ve M6 (scheduler kapalı) adaylarının eğitim ve izleme kayıpları (üstte) ile epoch bazında öğrenme oranı (altta, logaritmik ölçek). Kesikli dikey çizgi en iyi epoch'u göstermektedir.")]
+t5 = [["Optimizer", "Eğitim sayısı", "Ortalama süre (s)", "Toplam süre (s)", "Ortalama durma epoch'u", "150 epoch'a ulaşan"]]
 for o, r in opt_t.iterrows():
     t5.append([OPT_TR[o], int(r.n_trainings), f"{r.mean_time_s:.3f}", f"{r.total_time_s:.1f}", f"{r.mean_stopped_epoch:.1f}", int(r.n_hit_150)])
-story += [tcap("Tablo A1. Optimizer bazında eğitim süreleri (108 dış-kat iç CV eğitimi + 36 tüm-development iç CV eğitimi). Donanım: Intel Xeon 2.10 GHz, 2 çekirdek, yalnızca CPU."),
+story += [tcap("Tablo A1. Optimizer bazında eğitim süreleri. Değerler, dış katlardaki 108 iç çapraz doğrulama eğitimi ile tüm geliştirme kümesindeki 36 eğitimden hesaplanmıştır."),
           table(t5, [2.5, 2.2, 2.8, 2.6, 3.2, 2.5])]
-t6 = [["Değişiklik (M1'e göre)", "İç CV AP (ort. ± SD)", "Katlar"]]
+SUPP_LABEL = {"M1": "M1 (StandardScaler, kırpma yok, unknown ayrı kategori)", "M4": "M1, MinMaxScaler ile",
+              "S_robust": "M1, RobustScaler ile", "S_clip": "M1, %1–%99 kırpma ile",
+              "S_unknown_mf": "M1, unknown değerleri en sık sınıfla doldurularak"}
+t6 = [["Konfigürasyon", "İç CV AP (ort. ± SD)", "Kat 1 / 2 / 3"]]
 for code, r in supp.iterrows():
-    t6.append([f"{code}: {r.change_vs_M1}", ms(r.mean_AP, r.sd_AP), r.fold_APs.replace(";", " / ")])
-story += [Spacer(1, 6), tcap("Tablo A2. Ek analiz: ön işleme alternatifleri (tüm development, aynı iç katlar). Bu analiz seçim bütçesine dahil değildir ve hiçbir seçimi etkilememiştir."),
+    t6.append([SUPP_LABEL[code], ms(r.mean_AP, r.sd_AP), r.fold_APs.replace(";", " / ")])
+story += [Spacer(1, 6), tcap("Tablo A2. Ön işleme alternatiflerinin tüm geliştirme kümesindeki aynı iç katlarda karşılaştırılması. Bu analiz arama bütçesine dahil edilmemiş ve hiçbir seçimde kullanılmamıştır."),
           table(t6, [7.0, 4.0, 5.0])]
-story += [fig(F / "fig_outer_cv_ap.png", 9.0, "Şekil A2. Dış kat AP değerleri: manuel arama, otomatik arama, Logistic Regression ve Dummy (Tablo 5 ile aynı değerler).")]
-story += [fig(F / "fig_eda_histograms.png", 13.0, "Şekil A3. Sayısal değişkenlerin histogramları (geliştirme kümesi; pdays için 999 kodu hariç)."),
-          fig(F / "fig_eda_categorical_bars.png", 12.0, "Şekil A4. Kategorik değişkenlerin frekansları (geliştirme kümesi; turuncu çubuklar unknown kodunu göstermektedir).")]
-rows = [["Commit", "Zaman", "Açıklama"]] + [l.split("|", 2) for l in git_log]
-story += [tcap("Tablo A3. Zaman sıralı git kaydı (rapor üretildiği andaki geçmiş)."), table(rows, [1.7, 4.3, 10.0])]
+story += [fig(F / "fig_outer_cv_ap.png", 9.0, "Şekil A2. Manuel arama, otomatik arama, Logistic Regression ve Dummy modelinin dış katlardaki AP değerleri. Değerler Tablo 5 ile aynıdır.")]
+story += [fig(F / "fig_eda_histograms.png", 13.0, "Şekil A3. Geliştirme kümesindeki sayısal değişkenlerin histogramları. pdays için 999 kodu dışarıda bırakılmıştır."),
+          fig(F / "fig_eda_categorical_bars.png", 12.0, "Şekil A4. Geliştirme kümesindeki kategorik değişkenlerin frekansları. Turuncu çubuklar unknown kodunu göstermektedir.")]
+STAGES = [("Veri bölünmesi ve EDA", "Veri kontrolü"), ("Adayların sabitlenmesi", "Nested CV öncesi"),
+          ("Nested CV ve nihai seçim", "Nested CV:"), ("Kilitli test tahminleri", "Kilitli test"),
+          ("Test metriklerinin hesaplanması", "Bağımsız test metrikleri")]
+rows = [["Aşama", "Commit", "Zaman"]]
+for stage, key in STAGES:
+    h, t, _ = [l for l in git_log if l.split("|", 2)[2].startswith(key)][0].split("|", 2)
+    rows.append([stage, h, t.replace("T", " ")[:19]])
+story += [tcap("Tablo A3. Deney aşamalarının GitHub deposundaki zaman sırası. Test metrikleri, kilitli tahminlerin kaydedildiği commit'ten sonra hesaplanmıştır."),
+          table(rows, [6.5, 2.5, 5.0])]
 
 
 def on_page(canvas, doc):

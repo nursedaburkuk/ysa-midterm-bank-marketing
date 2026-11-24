@@ -281,7 +281,7 @@ story += [Paragraph("2.3 Deney hipotezleri", H2), p(
 # ---------------------------------------------------------------------------
 s = seeds["seeds"]
 story += [Paragraph("3. Yöntem", H1), Paragraph("3.1 Seed politikası ve iç içe çapraz doğrulama", H2), p(
-    f"Temel tohum değeri (seed), öğrenci numarasının son beş hanesine (29048) 2026 eklenerek {seeds['base_seed']} olarak belirlenmiş, alt seed'ler "
+    f"Temel seed, öğrenci numarasının son beş hanesine (29048) 2026 eklenerek {seeds['base_seed']} olarak belirlenmiş, alt seed'ler "
     f"sabit kaydırmalarla türetilmiştir: Python {s['python']}, NumPy {s['numpy']}, PyTorch {s['torch']}, test bölünmesi "
     f"{s['train_test_split']}, dış CV {s['outer_cv']}, iç CV {s['inner_cv']}, izleme bölünmesi {s['early_stop_split']}, rastgele arama "
     f"{s['random_search']}, bootstrap {s['bootstrap']}, ek ağırlık seed'leri {s['torch_stability_2']} ve {s['torch_stability_3']}. "
@@ -335,8 +335,8 @@ story += [Paragraph("3.4 Referans modeller", H2), p(
 # 4 Deneyler
 # ---------------------------------------------------------------------------
 story += [Paragraph("4. Manuel ve otomatik hiperparametre araması", H1), p(
-    "Manuel adaylar, M1 temel konfigürasyonundan tek bir faktör değiştirilerek tanımlanmıştır (yığın boyutu/batch size = 64, dropout = 0, ReLU, "
-    "ağırlık azaltma/weight decay = 1e-4). Otomatik adaylar ParameterSampler ile her optimizer için iki aday olacak biçimde örneklenmiş, öğrenme oranı Adam ve "
+    "Manuel adaylar, M1 temel konfigürasyonundan tek bir faktör değiştirilerek tanımlanmıştır (batch size = 64, dropout = 0, ReLU, "
+    "weight decay = 1e-4). Otomatik adaylar ParameterSampler ile her optimizer için iki aday olacak biçimde örneklenmiş, öğrenme oranı Adam ve "
     "AdamW için 1e-4–1e-2, SGD için 1e-3–1e-1 aralığında log-uniform dağılımdan çekilmiştir. Tüm adaylar iç içe çapraz doğrulama "
     "başlamadan önce ayrı bir commit ile kaydedilmiştir. Sonuçlar Tablo 3 ve Tablo 4'te verilmiştir.")]
 
